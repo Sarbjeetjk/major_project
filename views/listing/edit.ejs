@@ -1,0 +1,67 @@
+<% layout("/layouts/boilerplate") %>
+<body>
+    <div class="col-8 offset-2">
+    <h3>Here you can edit your details</h3>
+     <form method="POST" action="/listings/<%=listing._id %>?_method=PUT" class="needs-validation" novalidate >
+
+        <div class="mb-3">
+        <label for="title">Title:</label>
+        <input name="listings[title]" value="<%=listing.title %>" class="form-control" required>
+        <div class="valid-feedback">
+      Looks good!
+    </div>
+    <div class="invalid-feedback">
+      Please provide a valid name.
+    </div>
+        </div>
+
+        <div class="mb-3">
+        <label for="description">Description:</label>
+        <textarea rows="4" cols="30" class="form-control" required name="listings[description]"><%=listing.description %> </textarea>
+        <div class="valid-feedback">
+      Looks good!
+    </div>
+     <div class="invalid-feedback">
+      Please provide a short description.
+    </div>
+        </div>
+
+        <div class="mb-3">
+        <label for="image">Image URL:</label>
+        <input name="listings[image]" value="<%=listing.image %>" class="form-control"><br>
+        </div>
+
+
+    <div class="row">
+        <div class="mb-3 col-md-4">
+        <label for="price">Price per night:</label>
+        <input name="listings[price]" value="<%=listing.price %>" class="form-control" required>
+         <div class="invalid-feedback">
+      Please provide a valid price.
+    </div>
+        </div>
+
+        <div class="mb-3 col-md-8">
+        <label for="country">Country:</label>
+        <input name="listings[country]" value="<%=listing.country %>" class="form-control"required><br>
+        </div>
+         <div class="invalid-feedback">
+      Please provide a valid country.
+    </div>
+    </div>
+
+        <div class="mb-3">
+        <label for="location">Location:</label>
+        <input name="listings[location]" value="<%=listing.location %>" class="form-control" required>
+         <div class="invalid-feedback">
+      Please provide a valid city.
+    </div>
+        </div> <br>
+    
+        
+
+        <button class="btn btn-dark button" type="submit">Edit</button>
+    </form>
+    <br><br>
+    </div>
+</body>

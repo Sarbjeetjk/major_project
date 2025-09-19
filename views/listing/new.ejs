@@ -1,0 +1,59 @@
+<% layout("/layouts/boilerplate") %>
+<div class="row">
+    <div class="col-8 offset-2">
+        <h1>Create a New Listing</h1>
+        <br>
+        <form action="/listings"method="POST" novalidate class="needs-validation">
+        <div>
+           <label for="title" class="form-label">Title:</label><br>
+           <input class="form-control" placeholder="Enter Title" name="listing[title]" required>
+            <div class="invalid-feedback">
+                Please provide a valid name.
+            </div>
+        </div>
+
+        <div>
+           <label for="description" class="form-label">Description:</label><br>
+           <textarea class="form-control" placeholder="Description" name="listing[description]" required></textarea>
+            <div class="invalid-feedback">
+               please provide a short description..
+            </div>
+        </div>
+
+        <div>
+           <label for="image" class="form-label">Image URL:</label><br>
+           <input class="form-control" placeholder="enter image url/link" name="listing[image]">
+        </div>
+
+    <div class="row">
+        <div class="mb-3 col-md-4">
+        <label for="price" class="form-label">Price per night:</label><br>
+        <input class="form-control"placeholder="1000" type="number" id="price" name="listing[price]" required>
+         <div class="invalid-feedback">
+             Please provide a valid price.
+         </div>
+        </div>
+
+        <div class="mb-3 col-md-8">
+         <label for="country" class="form-label">Country:</label><br>
+         <input class="form-control"placeholder="India" type="text" id="country" name="listing[country]" required>
+            <div class="invalid-feedback">
+              Please provide a valid country.
+            </div>
+        </div>
+    </div>
+
+        <div>
+           <label for="location" class="form-label">Location:</label><br>
+           <input class="form-control"placeholder="Patna,Bihar" type="text" id="location" name="listing[location]" required>
+            <div class="invalid-feedback">
+               Please provide a valid city.
+            </div>
+        </div> <br>
+       
+        <button class="btn  dark-btn button" type="submit">Add Listing</button>
+    </form>
+    <br><br>
+    </div>
+</div>
+
