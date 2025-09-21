@@ -17,16 +17,26 @@ async function main() {
 }
 
 const initDB = async () => {
-    try{
-        await main();
         await Listing.deleteMany({});
+        initData.data = initData.data.map((obj) =>({...obj, owner:"68cd7a7f7fbeba6bf5b670b6",}));
         await Listing.insertMany(initData.data);
         console.log("Database initialized with sample data");
-} catch (err) {
-        console.error("Error initializing database", err);
-    } finally {
-        mongoose.connection.close();
-    }
+
 };
+ 
+// const initDB = async () => {
+//     try{
+//         await main();
+//         await Listing.deleteMany({});
+//         await Listing.deleteMany({});
+//         initData.data = initData.data.map((obj) =>({...obj, owner:"68cd7a7f7fbeba6bf5b670b6",}));
+//         await Listing.insertMany(initData.data);
+//         console.log("Database initialized with sample data");
+// } catch (err) {
+//         console.error("Error initializing database", err);
+//     } finally {
+//         mongoose.connection.close();
+//     }
+// };
    
 initDB();
