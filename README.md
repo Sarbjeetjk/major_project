@@ -18,3 +18,19 @@ last update was adding mvc framework
   adding controllers
 
   hmne kuch file me changes kiya hai 
+
+  structuring file formate 
+
+  adding router.route to simplictiy in  code and esay to understanding 
+
+  adding  reveiw style like star formate 
+
+adding new feature by upload an image 
+when i create anew lisitng then we can upload a image 
+then we add edit and update  form by adding previews image then new image 
+
+
+all done last was image uplaod via pic 
+
+last one is adding map in listing when we use view listing
+using mapbox api

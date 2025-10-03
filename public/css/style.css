@@ -117,3 +117,11 @@ body {
 .btn {
     margin-right:1rem ;
 }
+
+/* map */
+#map {
+    border-radius: 15px;
+    border: #090909 2px solid;
+    height:400px;
+    width: 100vh;
+}
