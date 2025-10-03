@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router({mergeParams:true});
-const wrapAsync = require("../utlity/wrapAsync.js");
+const wrapAsync = require("../utility/wrapAsync.js");
 const Review = require("../models/review.js");
 const Listing = require('../models/listing.js');
 const { validateReview,isLoggedIn,isReviewAuthor } = require("../middleware.js");
