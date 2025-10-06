@@ -28,17 +28,17 @@
     </form>
         </div>
         <div class="navbar-nav ms-auto">
-          <a class="nav-link" href="/listings/new">Add New Listing &nbsp;</a>
+          <a class="nav-link " href="/listings/new">Add New Listing &nbsp;</a>
           <%if(!currUser){%>
-          <a class="nav-link active" aria-current="page" href="/signup"><B>signup</B></a>
-          <a class="nav-link" href="/login"><B>Login</B></a>
+          <a class="nav-link  btn-outline active" aria-current="page" href="/signup"><B>signup</B></a>
+          <a class="nav-link btn-login btn-outline" href="/login"><B>Login</B></a>
           <% } %>
           <%if(currUser){%>
-          <div class="nav-user d-flex flex-column align-items-center justify-content-center">
+          <div class="nav-user d-flex flex-column  align-items-center justify-content-center">
             <a class="nav-link user-avatar-link p-0" href="#" title="Profile"><span class="user-avatar"><i class="fa-solid fa-user"></i></span></a>
-            <span class="user-name"><%= currUser.username %></span>
+            <span class="user-name "><%= currUser.username %></span>
           </div>
-          <a class="nav-link logout-link d-flex align-items-center justify-content-center" href="/logout"><b>Logout</b></a>
+          <a class="nav-link btn-search btn-outline logout-link d-flex align-items-center justify-content-center" href="/logout"><b>Logout</b></a>
           <% } %>
     </div>
   </div>

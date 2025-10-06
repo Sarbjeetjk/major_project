@@ -101,11 +101,24 @@ app.use("/listings/:id/reviews",reviewsRouter);
 app.use("/",userRouter);
 
 // where undefine route ( page not found)//
-app.use((err,req,res,next) =>{
-    let {statusCode=500, message="something went wrong"} = err;
-    res.status(statusCode) .send(message);
-    
+
+app.all(/.*./,(req,res,next) =>{
+    next(new ExpressError("Page Not Found",404));
 });
+
+// generic error handler
+app.use((err, req, res, next) => {
+    let {statusCode = 500, message = "Something went wrong!"} = err;
+    if(!err.message) err.message = "Oh No, Something Went Wrong!";
+    res.status(statusCode).render("error.ejs",{err, statusCode});
+});
+
+app.use((err, req, res, next) => {
+    let {statusCode = 500, message = "Something went wrong!"} = err;
+    // Set the status code and render the error template
+    res.render("error.ejs",{err, statusCode});
+});
+
 
 //start the server
 app.listen(8080, () => {

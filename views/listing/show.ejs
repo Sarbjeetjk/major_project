@@ -35,7 +35,7 @@
 
                     <div class="show-edits ">
                         <button class="btn btn-dark btn-listing"><a href="/listings">Back</a></button>
-
+<% if(currUser&& listing.owner._id.equals(currUser._id)) { %>
                         <button class="btn btn-dark btn-elisting"><a href="/listings/<%= listing._id %>/edit">Edit
                                 This Listing</a></button>
                         <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST"
@@ -45,7 +45,7 @@
                                 onclick="return confirm('Are you sure you want to delete this listing?');">Delete
                                 This Listing</button>
                         </form>
-
+<% } %>
                     </div>
                     <hr>
 
@@ -100,10 +100,12 @@
                                                     <p class="starability-result card-text"
                                                         data-rating="<%= review.rating%>"></p>
                                                 </div>
+                                                <% if (currUser && review && review.author && String(review.author._id) === String(currUser._id)) { %>
                                                 <form class="mb-3" method="POST"
-                                                    action="/listings/<%= listing._id  %>/Reviews/<%= review._id  %>?_method=DELETE">
+                                                    action="/listings/<%= listing._id  %>/reviews/<%= review._id  %>?_method=DELETE">
                                                     <button class="btn btn-sm btn-outline-danger">Delete</button>
                                                 </form>
+                                                <% } %>
                                             </div>
                                             <% } %>
                                     </div>
