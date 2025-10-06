@@ -10,6 +10,7 @@ const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const ExpressError = require("./utility/ExpressError.js");
 const session =require("express-session");
+const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
@@ -19,9 +20,10 @@ const listingRouter = require("./routes/listing.js");
 const reviewsRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 const e = require('connect-flash');
+const { env } = require('process');
 
-// MongoDB connection URL
-const mongo_url ='mongodb://localhost:27017/wonderlust';
+
+const dbUrl=process.env.ATLASDB_URL;
 
 main()
 .then(() => {
@@ -33,7 +35,7 @@ main()
 
 //connect to MongoDB
 async function main() {
-        await mongoose.connect(mongo_url);
+        await mongoose.connect(dbUrl);
 }
 
 app.use(express.urlencoded({ extended: true }));
@@ -45,17 +47,29 @@ app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set("views", path.join(__dirname, 'views'));
 
-
+const store = MongoStore.create({
+    mongoUrl:dbUrl,
+    touchAfter:24*60*60,
+    crypto:{
+        secret:process.env.SECRET,
+    },
+    touchAfter:24*60*60,
+});
+store.on("error",()=>{
+    console.log("session store error");
+});
 const sessionOptions = {
-    secret:"mysupercode",
+    store,
+    secret:process.env.SECRET,
     resave:false,
-    saveUninitialized:true
+    saveUninitialized:true,
+    cookie:{
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7, // 1 week
+        maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+        httpOnly:true,
+    }
 };
 
-//home route
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-});
 
 app.use(session(sessionOptions));
 app.use(flash());
@@ -71,19 +85,16 @@ app.use((req,res,next) =>{
       res.locals.success =req.flash("success");
       res.locals.error =req.flash("error");
       res.locals.currUser = req.user;
+      // defaults for navbar search locals so EJS doesn't error on undefined
+      res.locals.q = "";
+      res.locals.category = "";
+      res.locals.minPrice = "";
+      res.locals.maxPrice = "";
+      res.locals.minRating = "";
       next();
 });
 
-// app.get("/demouser",async(req,res)=>{
-//    let fakeUser =new User ({
-//       email:"student@gmail.com",
-//       username:"sarbjeet"
-//    });
 
-//    let registeredUser = await User.register(fakeUser,"password");
-//    res.send(registeredUser);
-// }
-// );
 
 app.use("/listings",listingRouter);
 app.use("/listings/:id/reviews",reviewsRouter);
@@ -102,18 +113,5 @@ app.listen(8080, () => {
 });
 
 
-// app.get('/testListing', async(req, res) => {
-//     let sampleListing = new Listing({
-//         title:"my new villa",
-//         description:"a beautiful villa",
-//         image:"",
-//         price:1000,
-//         location:"Goa",
-//         country:"India"
-//     });
-//     await sampleListing.save();
-//     console.log(sampleListing);
-//     console.log("sample was saved");
-//     res.send('Listing created!');
-// });
+
 

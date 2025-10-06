@@ -20,10 +20,29 @@
             </div>
         </div>
 
-        <div>
-           <label for="image" class="form-label">Upload Image</label><br>
-           <input class="form-control" type="file" name="listing[image]" />
+        <div class="row">
+            <div class="mb-3 col-md-8">
+               <label for="image" class="form-label">Upload Image:</label><br>
+               <input class="form-control" type="file" name="listing[image]" />
+            </div>
+            <div class="mb-3 col-md-4">
+                <label for="category" class="form-label">Category:</label><br>
+                <select class="form-control" id="category" name="listing[category]">
+                    <option value="Trending">Trending</option>
+                    <option value="Rooms">Rooms</option>
+                    <option value="iconic- cities">iconic- cities</option>
+                    <option value="castles">castles</option>
+                    <option value="Pools">Pools</option>
+                    <option value="Camping">Camping</option>
+                    <option value="arctic">arctic</option>
+                    <option value="Boats">Boats</option>
+                    <option value="farming">farming</option>
+                    <option value="horse">horse</option>
+                    <option value="Domes">Domes</option>
+                </select>
+            </div>
         </div>
+
 
     <div class="row">
         <div class="mb-3 col-md-4">
@@ -32,7 +51,7 @@
          <div class="invalid-feedback">
              Please provide a valid price.
          </div>
-        </div>
+      </div>
 
         <div class="mb-3 col-md-8">
          <label for="country" class="form-label">Country:</label><br>

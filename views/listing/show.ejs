@@ -1,6 +1,7 @@
 <% layout("/layouts/boilerplate") %>
 <script>
     const mapToken = '<%= process.env.MAP_TOKEN %>'; 
+    const listing = <%- JSON.stringify(listing) %>;
 </script>
 
     <body>
@@ -28,9 +29,9 @@
                             <%= listing.description %>
                         </p>
                         <p>Price: &#8377;<%= listing.price.toLocaleString("en-IN") %> per night </p>
-                        <p>Location: <%= listing.location %>, <%= listing.country %>
+                        <p>Location: <%= listing.location %>, <%= listing.country %></p>
                     </div>
-                    </p>
+                    
 
                     <div class="show-edits ">
                         <button class="btn btn-dark btn-listing"><a href="/listings">Back</a></button>
@@ -109,13 +110,12 @@
                                     <% } %>
                         </div>
                     </div>
-                    <div class="col-8 offset-2 mb-5">
+                    <div class="col-12 mb-5">
                         <h3>where you'll be</h3>
                         <div id="map"></div>
                     </div>
                 </div>
-        </div>
-        <script src="/js/map.js">
-        </script>
+            </div>
+                  <script src="/js/map.js"></script>
                        
     </body>

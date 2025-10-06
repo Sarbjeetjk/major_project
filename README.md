@@ -34,3 +34,9 @@ all done last was image uplaod via pic
 
 last one is adding map in listing when we use view listing
 using mapbox api
+
+adding map marker 
+adding geocoding api
+adding mapbox api
+
+ADD UI AND UPDATE frontpage

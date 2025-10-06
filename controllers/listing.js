@@ -1,8 +1,59 @@
 const Listing = require("../models/listing.js");
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const mapToken = process.env.MAP_TOKEN;
+const geocodingClient = mbxGeocoding({ accessToken: mapToken });
 
 module.exports.index =async (req, res) => {
-   const allListing= await Listing.find({});
-   res.render("listing/index.ejs",{allListing});
+   const { q, category, minPrice, maxPrice, minRating } = req.query;
+   const basicFilter = {};
+   if (q) {
+       basicFilter.$or = [
+           { title: { $regex: q, $options: 'i' } },
+           { description: { $regex: q, $options: 'i' } },
+           { location: { $regex: q, $options: 'i' } },
+           { country: { $regex: q, $options: 'i' } },
+       ];
+   }
+   if (category) {
+       basicFilter.category = category;
+   }
+   if (minPrice || maxPrice) {
+       basicFilter.price = {};
+       if (minPrice) basicFilter.price.$gte = Number(minPrice);
+       if (maxPrice) basicFilter.price.$lte = Number(maxPrice);
+   }
+
+   // If filtering by rating, use aggregation to compute average rating
+   if (minRating) {
+       const pipeline = [
+           { $match: basicFilter },
+           { $lookup: { from: 'reviews', localField: 'reviews', foreignField: '_id', as: 'reviewsDocs' } },
+           { $addFields: {
+               avgRating: { $cond: [ { $gt: [ { $size: '$reviewsDocs' }, 0 ] }, { $avg: '$reviewsDocs.rating' }, null ] },
+               reviewsCount: { $size: '$reviewsDocs' }
+           } },
+           { $match: { avgRating: { $ne: null, $gte: Number(minRating) } } },
+       ];
+       const docs = await Listing.aggregate(pipeline);
+       return res.render('listing/index.ejs', {
+           allListing: docs,
+           q: q || '',
+           category: category || '',
+           minPrice: minPrice || '',
+           maxPrice: maxPrice || '',
+           minRating: minRating || '',
+       });
+   }
+
+   const allListing= await Listing.find(basicFilter);
+   res.render('listing/index.ejs', {
+       allListing,
+       q: q || '',
+       category: category || '',
+       minPrice: minPrice || '',
+       maxPrice: maxPrice || '',
+       minRating: minRating || '',
+   });
 };
 
 module.exports.renderNewForm = (req, res) => {
@@ -24,6 +75,13 @@ module.exports.showFrom = async(req, res) => {
     res.render("listing/show.ejs",{listing});
 };
 module.exports.Create = async (req, res) => {
+    let response = await geocodingClient
+        .forwardGeocode({
+            query: req.body.listing.location,
+            limit: 1
+        })
+        .send();
+   
     let url = req.file.path;
     let filename = req.file.filename;
     // console.log(url,"...",filename);
@@ -31,6 +89,14 @@ module.exports.Create = async (req, res) => {
     const newListing = new Listing(req.body.listing);
     newListing.owner = req.user._id;
     newListing.image = { url: req.file.path, filename: req.file.filename };
+    const features = response && response.body && Array.isArray(response.body.features)
+        ? response.body.features
+        : [];
+    if (features.length === 0 || !features[0].geometry) {
+        req.flash("error", "Could not determine location coordinates. Please enter a valid location.");
+        return res.redirect("/listings/new");
+    }
+    newListing.geometry = features[0].geometry;
     await newListing.save();
     req.flash("success","New Listing Added..");
     // console.log(newListing);
@@ -58,9 +124,23 @@ module.exports.update = async(req, res) => {
             req.flash("error", "Listing not found");
             return res.redirect("/listings");
         }
-        
+        const prevLocation = listing.location;
+        const nextLocation = req.body.listing?.location;
         // Update basic listing data
-        listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing }, { new: true });
+        listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing }, { new: true, runValidators: true });
+        // If location changed, recompute geometry via Mapbox
+        if (nextLocation && nextLocation !== prevLocation) {
+            const geo = await geocodingClient
+                .forwardGeocode({ query: nextLocation, limit: 1 })
+                .send();
+            const features = geo && geo.body && Array.isArray(geo.body.features) ? geo.body.features : [];
+            if (features.length === 0 || !features[0].geometry) {
+                req.flash("error", "Could not determine new location coordinates. Please enter a valid location.");
+                return res.redirect(`/listings/${id}/edit`);
+            }
+            listing.geometry = features[0].geometry;
+            await listing.save();
+        }
         
         // Check if a new file was uploaded
         if (req.file && req.file.path) {

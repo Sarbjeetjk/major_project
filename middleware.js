@@ -32,9 +32,16 @@ module.exports.IsOwner = async (req,res,next)=> {
 };
 
 module.exports.validateListing = (req,res ,next)=>{
-    let{error} = listingSchema.validate({ listing: req.body.listing });
+    let{error} = listingSchema.validate({ listing: req.body.listing }, { abortEarly: false, allowUnknown: true });
     if(error) {
-        let errMsg = error.details.map((el) => el.message).join(",");
+        const nonCategoryIssues = error.details.filter((d) => {
+            const pathStr = Array.isArray(d.path) ? d.path.join('.') : String(d.path || '');
+            return pathStr !== 'listing.category';
+        });
+        if (nonCategoryIssues.length === 0) {
+            return next();
+        }
+        let errMsg = nonCategoryIssues.map((el) => el.message).join(",");
         throw new ExpressError(400,errMsg);
     } else {
         next();

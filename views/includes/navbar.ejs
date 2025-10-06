@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="/css/style.css"/>
 <nav class="navbar navbar-expand-md bg-body-tertiary border-bottom sticky-top">
   <div class="container-fluid">
     <a class="navbar-brand" href="/listings"><i class="fa-solid fa-house"></i></a>
@@ -7,17 +8,37 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-          <a class="nav-link active" aria-current="page" href="/listings">Home</a>
-          <a class="nav-link" href="/listings">All Listing</a>
-          <a class="nav-link" href="/listings/new">Create Listing</a>
-    </div>
-      <div class="navbar-nav ms-auto">
-      <%if(!currUser){%>
-          <a class="nav-link active" aria-current="page" href="/signup">signup</a>
-          <a class="nav-link" href="/login">Login</a>
+          <a class="nav-link" href="/listings"><b>EXPLORE</b></a>
+        </div>
+        <div class=" navbar-nav ms-auto search">
+           <form class="d-flex" role="search" action="/listings" method="get">
+      <input name="q" value="<%= typeof q !== 'undefined' ? q : '' %>" class="form-control me-2 search-inp" type="search" placeholder="Title/Location">
+       
+      <input name="minPrice" value="<%= typeof minPrice !== 'undefined' ? minPrice : '' %>" class="form-control me-2" type="number" min="0" placeholder="Min Price">
+      <input name="maxPrice" value="<%= typeof maxPrice !== 'undefined' ? maxPrice : '' %>" class="form-control me-2" type="number" min="0" placeholder="Max Price">
+      <select name="minRating" class="form-select me-2">
+        <option value="" <%= (typeof minRating === 'undefined' || !minRating) ? 'selected' : '' %>>Any Rating</option>
+        <option value="1" <%= (minRating==='1') ? 'selected' : '' %>>1+</option>
+        <option value="2" <%= (minRating==='2') ? 'selected' : '' %>>2+</option>
+        <option value="3" <%= (minRating==='3') ? 'selected' : '' %>>3+</option>
+        <option value="4" <%= (minRating==='4') ? 'selected' : '' %>>4+</option>
+        <option value="5" <%= (minRating==='5') ? 'selected' : '' %>>5</option>
+      </select>
+      <button class="btn-search btn-outline" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
+    </form>
+        </div>
+        <div class="navbar-nav ms-auto">
+          <a class="nav-link" href="/listings/new">Add New Listing &nbsp;</a>
+          <%if(!currUser){%>
+          <a class="nav-link active" aria-current="page" href="/signup"><B>signup</B></a>
+          <a class="nav-link" href="/login"><B>Login</B></a>
           <% } %>
           <%if(currUser){%>
-          <a class="nav-link" href="/logout">Logout</a>
+          <div class="nav-user d-flex flex-column align-items-center justify-content-center">
+            <a class="nav-link user-avatar-link p-0" href="#" title="Profile"><span class="user-avatar"><i class="fa-solid fa-user"></i></span></a>
+            <span class="user-name"><%= currUser.username %></span>
+          </div>
+          <a class="nav-link logout-link d-flex align-items-center justify-content-center" href="/logout"><b>Logout</b></a>
           <% } %>
     </div>
   </div>
