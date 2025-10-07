@@ -59,6 +59,35 @@
          <div class="invalid-feedback">
       Please provide a valid city.
     </div>
+        </div>
+
+        <div class="mb-3">
+        <label for="category">Category:</label>
+        <select class="form-control" id="category" name="listing[category]">
+            <option value="beach" <%= listing.category === 'beach' ? 'selected' : '' %>>Beach</option>
+            <option value="iconic-cities" <%= listing.category === 'iconic-cities' ? 'selected' : '' %>>Iconic Cities</option>
+            <option value="mountains" <%= listing.category === 'mountains' ? 'selected' : '' %>>Mountains</option>
+            <option value="heritage" <%= listing.category === 'heritage' ? 'selected' : '' %>>Heritage</option>
+            <option value="unique-stays" <%= listing.category === 'unique-stays' ? 'selected' : '' %>>Unique Stays</option>
+            <option value="lake" <%= listing.category === 'lake' ? 'selected' : '' %>>Lake</option>
+            <option value="luxury" <%= listing.category === 'luxury' ? 'selected' : '' %>>Luxury</option>
+            <option value="wildlife" <%= listing.category === 'wildlife' ? 'selected' : '' %>>Wildlife</option>
+        </select>
+        </div>
+
+        <div class="mb-3">
+            <h5>Coordinates (Optional - Leave blank to auto-generate from location)</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="latitude">Latitude:</label>
+                    <input name="listing[latitude]" value="<%=listing.geometry && listing.geometry.coordinates ? listing.geometry.coordinates[1] : '' %>" class="form-control" type="number" step="any" placeholder="e.g., 25.5941">
+                </div>
+                <div class="col-md-6">
+                    <label for="longitude">Longitude:</label>
+                    <input name="listing[longitude]" value="<%=listing.geometry && listing.geometry.coordinates ? listing.geometry.coordinates[0] : '' %>" class="form-control" type="number" step="any" placeholder="e.g., 85.1376">
+                </div>
+            </div>
+            <small class="form-text text-muted">If you provide coordinates, they will override the auto-generated coordinates from the location field.</small>
         </div> <br>
     
         

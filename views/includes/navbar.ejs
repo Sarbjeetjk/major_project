@@ -10,7 +10,9 @@
       <div class="navbar-nav">
           <a class="nav-link" href="/listings"><b>EXPLORE</b></a>
         </div>
-        <div class=" navbar-nav ms-auto search">
+        
+        <!-- Desktop Search Form -->
+        <div class="navbar-nav ms-auto search d-none d-lg-flex">
            <form class="d-flex" role="search" action="/listings" method="get">
       <input name="q" value="<%= typeof q !== 'undefined' ? q : '' %>" class="form-control me-2 search-inp" type="search" placeholder="Title/Location">
        
@@ -27,18 +29,67 @@
       <button class="btn-search btn-outline" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
     </form>
         </div>
+        
+        <!-- Mobile Search Toggle Button -->
+        <div class="navbar-nav d-lg-none">
+          <button class="btn btn-outline-secondary mobile-search-btn" type="button" data-bs-toggle="collapse" data-bs-target="#mobileSearchForm" aria-expanded="false">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+        
+        <!-- Mobile Search Form -->
+        <div class="collapse w-100" id="mobileSearchForm">
+          <form class="d-flex flex-column p-3 bg-light rounded mt-2" role="search" action="/listings" method="get">
+            <input name="q" value="<%= typeof q !== 'undefined' ? q : '' %>" class="form-control mb-2" type="search" placeholder="Title/Location">
+            <div class="row">
+              <div class="col-6">
+                <input name="minPrice" value="<%= typeof minPrice !== 'undefined' ? minPrice : '' %>" class="form-control" type="number" min="0" placeholder="Min Price">
+              </div>
+              <div class="col-6">
+                <input name="maxPrice" value="<%= typeof maxPrice !== 'undefined' ? maxPrice : '' %>" class="form-control" type="number" min="0" placeholder="Max Price">
+              </div>
+            </div>
+            <select name="minRating" class="form-select mt-2 mb-2">
+              <option value="" <%= (typeof minRating === 'undefined' || !minRating) ? 'selected' : '' %>>Any Rating</option>
+              <option value="1" <%= (minRating==='1') ? 'selected' : '' %>>1+</option>
+              <option value="2" <%= (minRating==='2') ? 'selected' : '' %>>2+</option>
+              <option value="3" <%= (minRating==='3') ? 'selected' : '' %>>3+</option>
+              <option value="4" <%= (minRating==='4') ? 'selected' : '' %>>4+</option>
+              <option value="5" <%= (minRating==='5') ? 'selected' : '' %>>5</option>
+            </select>
+            <button class="btn btn-primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+          </form>
+        </div>
+        
         <div class="navbar-nav ms-auto">
-          <a class="nav-link " href="/listings/new">Add New Listing &nbsp;</a>
+          <%if(currUser){%>
+          <a class="nav-link btn-add-listing" href="/listings/new">
+            <i class=""></i> Add Listing
+          </a>
+          <% } %>
+          
           <%if(!currUser){%>
           <a class="nav-link  btn-outline active" aria-current="page" href="/signup"><B>signup</B></a>
           <a class="nav-link btn-login btn-outline" href="/login"><B>Login</B></a>
           <% } %>
+          
           <%if(currUser){%>
-          <div class="nav-user d-flex flex-column  align-items-center justify-content-center">
-            <a class="nav-link user-avatar-link p-0" href="#" title="Profile"><span class="user-avatar"><i class="fa-solid fa-user"></i></span></a>
-            <span class="user-name "><%= currUser.username %></span>
+          <div class="nav-user d-flex align-items-center">
+            <div class="dropdown">
+              <a class="nav-link user-profile-link d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="user-avatar me-2"><i class="fa-solid fa-user"></i></span>
+                <span class="user-name"><%= currUser.username %></span>
+                <i class="fa-solid fa-chevron-down ms-1"></i>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="#"><i class="fa-solid fa-user me-2"></i>Profile</a></li>
+                <li><a class="dropdown-item" href="/listings/new"><i class="fa-solid fa-plus me-2"></i>Add Listing</a></li>
+                <li><a class="dropdown-item" href="#"><i class="fa-solid fa-gear me-2"></i>Settings</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="/logout"><i class="fa-solid fa-sign-out me-2"></i>Logout</a></li>
+              </ul>
+            </div>
           </div>
-          <a class="nav-link btn-search btn-outline logout-link d-flex align-items-center justify-content-center" href="/logout"><b>Logout</b></a>
           <% } %>
     </div>
   </div>

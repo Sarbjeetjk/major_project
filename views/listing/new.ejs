@@ -28,17 +28,14 @@
             <div class="mb-3 col-md-4">
                 <label for="category" class="form-label">Category:</label><br>
                 <select class="form-control" id="category" name="listing[category]">
-                    <option value="Trending">Trending</option>
-                    <option value="Rooms">Rooms</option>
-                    <option value="iconic- cities">iconic- cities</option>
-                    <option value="castles">castles</option>
-                    <option value="Pools">Pools</option>
-                    <option value="Camping">Camping</option>
-                    <option value="arctic">arctic</option>
-                    <option value="Boats">Boats</option>
-                    <option value="farming">farming</option>
-                    <option value="horse">horse</option>
-                    <option value="Domes">Domes</option>
+                    <option value="beach">Beach</option>
+                    <option value="iconic-cities">Iconic Cities</option>
+                    <option value="mountains">Mountains</option>
+                    <option value="heritage">Heritage</option>
+                    <option value="unique-stays">Unique Stays</option>
+                    <option value="lake">Lake</option>
+                    <option value="luxury">Luxury</option>
+                    <option value="wildlife">Wildlife</option>
                 </select>
             </div>
         </div>
@@ -68,6 +65,21 @@
             <div class="invalid-feedback">
                Please provide a valid city.
             </div>
+        </div>
+
+        <div class="mb-3">
+            <h5>Coordinates (Optional - Leave blank to auto-generate from location)</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="latitude" class="form-label">Latitude:</label>
+                    <input class="form-control" name="listing[latitude]" type="number" step="any" placeholder="e.g., 25.5941">
+                </div>
+                <div class="col-md-6">
+                    <label for="longitude" class="form-label">Longitude:</label>
+                    <input class="form-control" name="listing[longitude]" type="number" step="any" placeholder="e.g., 85.1376">
+                </div>
+            </div>
+            <small class="form-text text-muted">If you provide coordinates, they will override the auto-generated coordinates from the location field.</small>
         </div> <br>
        
         <button class="btn  dark-btn button" type="submit">Add Listing</button>

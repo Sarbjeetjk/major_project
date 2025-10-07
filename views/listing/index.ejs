@@ -2,63 +2,77 @@
     <%=success %>
    
     </form>
-    <div id="filters">
-        <a href="/listings" class="filter <%= (!category || category==='') ? 'active' : '' %>">
-          <div><i class="fa-solid fa-layer-group"></i></div>
-          <p> All</p>
-        </a>
-        <a href="/listings?category=Trending" class="filter <%= (category==='Trending') ? 'active' : '' %>">
-          <div><i class="fa-solid fa-fire"></i></div>
-          <p> Trending</p>
-        </a>
-        <a href="/listings?category=Rooms" class="filter <%= (category==='Rooms') ? 'active' : '' %>">
-          <div><i class="fa-solid fa-bed"></i></div>
-          <p> Rooms</p>
-        </a>
-        <a href="/listings?category=iconic- cities" class="filter <%= (category==='iconic- cities') ? 'active' : '' %>">
-          <div><i class="fa-solid fa-mountain-city"></i></div>
-          <p> iconic- cities</p>
-        </a>
-        <a href="/listings?category=castles" class="filter <%= (category==='castles') ? 'active' : '' %>">
-          <div><i class="fa-solid fa-fort-awesome"></i></div>
-          <p> castles</p>
-        </a>
-        <a href="/listings?category=pools" class="filter <%= (category==='pools') ? 'active' : '' %>">
-          <div><i class="fa-solid fa-person-swimming"></i></div>
-          <p> pools</p>
-        </a>
-        <a href="/listings?category=camping" class="filter <%= (category==='camping') ? 'active' : '' %>">
-          <div><i class="fa-solid fa-campground"></i></div>
-          <p> camping</p>
-        </a>
-        <a href="/listings?category=Boats" class="filter <%= (category==='Boats') ? 'active' : '' %>">
-          <div><i class="fa-solid fa-ship"></i></div>
-          <p> Boats</p>
-        </a>
-        <a href="/listings?category=farming" class="filter <%= (category==='farming') ? 'active' : '' %>">
-          <div><i class="fa-solid fa-wheat-awn"></i></div>
-          <p> farming</p>
-        </a>
-        <a href="/listings?category=horse" class="filter <%= (category==='horse') ? 'active' : '' %>">
-          <div><i class="fa-solid fa-horse"></i></div>
-          <p> horse</p>
-        </a>
-        <a href="/listings?category=arctic" class="filter <%= (category==='arctic') ? 'active' : '' %>">
-          <div><i class="fa-solid fa-snowflake"></i></div>
-          <p> arctic</p>
-        </a>
-        <a href="/listings?category=Domes" class="filter <%= (category==='Domes') ? 'active' : '' %>">
-          <div><i class="fa-solid fa-igloo"></i></div>
-          <p> Domes</p>
-        </a>
+    <div id="filters-container">
+        <button id="scroll-left" class="scroll-btn" onclick="scrollFilters('left')">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        
+        <div id="filters">
+            <a href="/listings" class="filter <%= (!category || category==='') ? 'active' : '' %>">
+              <div><i class="fa-solid fa-layer-group"></i></div>
+              <p> All</p>
+            </a>
+            <a href="/listings?category=beach" class="filter <%= (category==='beach') ? 'active' : '' %>">
+              <div><i class="fa-solid fa-umbrella-beach"></i></div>
+              <p> Beach</p>
+            </a>
+            <a href="/listings?category=iconic-cities" class="filter <%= (category==='iconic-cities') ? 'active' : '' %>">
+              <div><i class="fa-solid fa-city"></i></div>
+              <p> Iconic Cities</p>
+            </a>
+            <a href="/listings?category=mountains" class="filter <%= (category==='mountains') ? 'active' : '' %>">
+              <div><i class="fa-solid fa-mountain"></i></div>
+              <p> Mountains</p>
+            </a>
+            <a href="/listings?category=heritage" class="filter <%= (category==='heritage') ? 'active' : '' %>">
+              <div><i class="fa-solid fa-landmark"></i></div>
+              <p> Heritage</p>
+            </a>
+            <a href="/listings?category=unique-stays" class="filter <%= (category==='unique-stays') ? 'active' : '' %>">
+              <div><i class="fa-solid fa-home"></i></div>
+              <p> Unique Stays</p>
+            </a>
+            <a href="/listings?category=lake" class="filter <%= (category==='lake') ? 'active' : '' %>">
+              <div><i class="fa-solid fa-water"></i></div>
+              <p> Lake</p>
+            </a>
+            <a href="/listings?category=luxury" class="filter <%= (category==='luxury') ? 'active' : '' %>">
+              <div><i class="fa-solid fa-gem"></i></div>
+              <p> Luxury</p>
+            </a>
+            <a href="/listings?category=wildlife" class="filter <%= (category==='wildlife') ? 'active' : '' %>">
+              <div><i class="fa-solid fa-paw"></i></div>
+              <p> Wildlife</p>
+            </a>
+            <a href="/listings?minPrice=0&maxPrice=1000" class="filter <%= (minPrice==='0' && maxPrice==='1000') ? 'active' : '' %>">
+              <div><i class="fa-solid fa-rupee-sign"></i></div>
+              <p> Budget</p>
+            </a>
+            <a href="/listings?minPrice=1000&maxPrice=2500" class="filter <%= (minPrice==='1000' && maxPrice==='2500') ? 'active' : '' %>">
+              <div><i class="fa-solid fa-coins"></i></div>
+              <p> Mid-Range</p>
+            </a>
+            <a href="/listings?minPrice=2500" class="filter <%= (minPrice==='2500') ? 'active' : '' %>">
+              <div><i class="fa-solid fa-crown"></i></div>
+              <p> Premium</p>
+            </a>
+            <a href="/listings?minRating=4" class="filter <%= (minRating==='4') ? 'active' : '' %>">
+              <div><i class="fa-solid fa-star"></i></div>
+              <p> Top Rated</p>
+            </a>
+            <button id="scroll-right" class="scroll-btn" onclick="scrollFilters('right')">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+        
         
         <div class="tax-toggle">
-            <div class="form-check-reverse form-switch">
-  <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-  <label class="form-check-label" for="flexSwitchCheckDefault">Display taxes</label>
-</div>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Display taxes</label>
+            </div>
         </div>
-    </div>
+      </div>
 
     <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-2">
         
@@ -69,7 +83,8 @@
                 <div class="card-body">
                    <p class="card-text"> 
                    <b> <%= listing.title %> </b><br>
-                   <%= listing.location %>, <%= listing.country %></p> <br>
+                   <%= listing.location %>, <%= listing.country %><br>
+                   <span class="badge bg-primary"><%= listing.category %></span></p> <br>
                    &#8377;<%= listing.price.toLocaleString("en-IN")%> 
                    <i class="tax-info"> &nbsp; +10% GST</i>
                 </div>
@@ -79,6 +94,54 @@
 
     <script src="/js/tax-info.js">
         </script>
+    
+    <script>
+        function scrollFilters(direction) {
+            const filtersContainer = document.getElementById('filters');
+            const scrollAmount = 200; // pixels to scroll
+            
+            if (direction === 'left') {
+                filtersContainer.scrollLeft -= scrollAmount;
+            } else if (direction === 'right') {
+                filtersContainer.scrollLeft += scrollAmount;
+            }
+            
+            // Update button visibility
+            updateScrollButtons();
+        }
+        
+        function updateScrollButtons() {
+            const filtersContainer = document.getElementById('filters');
+            const leftBtn = document.getElementById('scroll-left');
+            const rightBtn = document.getElementById('scroll-right');
+            
+            // Show/hide left button
+            if (filtersContainer.scrollLeft <= 0) {
+                leftBtn.style.opacity = '0.3';
+                leftBtn.style.pointerEvents = 'none';
+            } else {
+                leftBtn.style.opacity = '1';
+                leftBtn.style.pointerEvents = 'auto';
+            }
+            
+            // Show/hide right button
+            if (filtersContainer.scrollLeft >= filtersContainer.scrollWidth - filtersContainer.clientWidth) {
+                rightBtn.style.opacity = '0.3';
+                rightBtn.style.pointerEvents = 'none';
+            } else {
+                rightBtn.style.opacity = '1';
+                rightBtn.style.pointerEvents = 'auto';
+            }
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateScrollButtons();
+            
+            // Update buttons on scroll
+            document.getElementById('filters').addEventListener('scroll', updateScrollButtons);
+        });
+    </script>
 
 
 

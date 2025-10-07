@@ -6,14 +6,15 @@
 
     <body>
         <div class="row mt-3">
-            <div class="col-8 offset-2 ">
-                <div class="card col-10 offset-1  show-card">
+            <div class="col-12 col-lg-8 offset-lg-2">
+                <div class="card show-card">
                     <div class="show-edits">
-                        <h2>Detail @: <b>
+                        <h2 class="listing-title">Detail @: <b>
                                 <%= listing.title %>
                             </b> </h2>
-                        <img src="<%= listing.image.url %>" alt="Listing Image"
-                            style="width:670px;height:500px;border-radius:15px; margin-bottom: 10px;">
+                        <div class="listing-image-container">
+                            <img src="<%= listing.image.url %>" alt="Listing Image" class="listing-image">
+                        </div>
                     </div>
 
 
@@ -88,24 +89,28 @@
                                 <% if(listing.reviews.length> 0){ %>
                                     <hr>
                                     <p><b>All Reviews</b></p>
-                                    <div class="row">
+                                    <div class="row reviews-container">
                                         <% for(review of listing.reviews) { %>
-                                            <div class="card col-5 ms-3 mb-3">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">@: <%= review.author.username %>
-                                                    </h5>
-                                                    <p class="card-text">
-                                                        <%= review.comment %>
-                                                    </p>
-                                                    <p class="starability-result card-text"
-                                                        data-rating="<%= review.rating%>"></p>
+                                            <div class="col-12 col-md-6 col-lg-5 mb-3">
+                                                <div class="card review-card">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">@: <%= review.author.username %>
+                                                        </h5>
+                                                        <p class="card-text">
+                                                            <%= review.comment %>
+                                                        </p>
+                                                        <p class="starability-result card-text"
+                                                            data-rating="<%= review.rating%>"></p>
+                                                    </div>
+                                                    <% if (currUser && review && review.author && String(review.author._id) === String(currUser._id)) { %>
+                                                    <div class="card-footer">
+                                                        <form class="mb-0" method="POST"
+                                                            action="/listings/<%= listing._id  %>/reviews/<%= review._id  %>?_method=DELETE">
+                                                            <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                                        </form>
+                                                    </div>
+                                                    <% } %>
                                                 </div>
-                                                <% if (currUser && review && review.author && String(review.author._id) === String(currUser._id)) { %>
-                                                <form class="mb-3" method="POST"
-                                                    action="/listings/<%= listing._id  %>/reviews/<%= review._id  %>?_method=DELETE">
-                                                    <button class="btn btn-sm btn-outline-danger">Delete</button>
-                                                </form>
-                                                <% } %>
                                             </div>
                                             <% } %>
                                     </div>
@@ -113,8 +118,8 @@
                         </div>
                     </div>
                     <div class="col-12 mb-5">
-                        <h3>where you'll be</h3>
-                        <div id="map"></div>
+                        <h3 class="map-title">where you'll be</h3>
+                        <div id="map" class="map-container"></div>
                     </div>
                 </div>
             </div>

@@ -27,7 +27,18 @@ const initDB = async () => {
         const enriched = await Promise.all(
             initData.data.map(async (obj) => {
                 const base = { ...obj, owner: "68e275ae4af8076c71e2b514" };
-                try {
+                
+                // Check if coordinates already exist in the data
+                if (obj.geometry && obj.geometry.coordinates && 
+                    Array.isArray(obj.geometry.coordinates) && 
+                    obj.geometry.coordinates.length === 2 &&
+                    obj.geometry.coordinates[0] !== 0 && obj.geometry.coordinates[1] !== 0) {
+                    // Use existing coordinates from data.js
+                    console.log(`Using existing coordinates for ${base.location}: [${obj.geometry.coordinates[0]}, ${obj.geometry.coordinates[1]}]`);
+                    base.geometry = obj.geometry;
+                } else {
+                    // Only geocode if coordinates are missing or invalid
+                    try {
                         const mapToken = process.env.MAP_TOKEN;
                         if(!mapToken) {
                                 throw new Error("Missing MAP_TOKEN env var");
@@ -39,19 +50,22 @@ const initDB = async () => {
                         const features = resp && resp.body && Array.isArray(resp.body.features) ? resp.body.features : [];
                         if (features.length > 0 && features[0].geometry) {
                                 base.geometry = features[0].geometry; // GeoJSON { type, coordinates:[lng,lat] }
+                                console.log(`Geocoded coordinates for ${base.location}: [${features[0].geometry.coordinates[0]}, ${features[0].geometry.coordinates[1]}]`);
                         } else {
                                 // fallback to [0,0] if not found
                                 base.geometry = { type: 'Point', coordinates: [0, 0] };
+                                console.log(`No geocoding results for ${base.location}, using default coordinates`);
                         }
-                } catch (e) {
+                    } catch (e) {
                         console.error("Geocoding failed for:", base.location, "-", e.message);
                         base.geometry = { type: 'Point', coordinates: [0, 0] };
+                    }
                 }
                 return base;
             })
         );
         await Listing.insertMany(enriched);
-        console.log("Database initialized with sample data (geocoded)");
+        console.log("Database initialized with sample data (preserving existing coordinates)");
 
 };
  
